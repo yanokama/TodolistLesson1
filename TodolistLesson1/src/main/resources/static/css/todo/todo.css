@@ -1,0 +1,30 @@
+.header{
+	padding-top:1rem!important;
+	padding-bottom:.5rem!important;
+	margin-bottom:1rem!important;
+}
+
+.title-input{
+	min-width:300px;
+	width:60%;
+}
+
+.th-width-name{
+	width:60%;
+}
+.th-width-btn{
+	width:10%;
+}
+.th-width-chk{
+	width:5%;
+}
+.input-text{
+	width:100%;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.todo-table{
+	max-width:1000px;
+}
+

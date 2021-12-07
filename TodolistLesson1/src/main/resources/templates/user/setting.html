@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+	<title>ユーザー詳細</title>
+	<!-- CSS読み込み -->
+	<link rel="stylesheet" th:href="@{/css/user/setting.css}"> 
+	<!-- JS読み込み -->
+	<script th:src="@{/js/user/setting.js}" defer></script>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="header border-bottom">
+			<h1 class="h2">ユーザー詳細</h1>		
+		</div>
+		<div>
+			<form id="user-setting-form" method="post" th:action="@{/user/setting}"
+				class="form-setting" th:object="${userForm}">
+				<!-- ユーザー詳細情報 -->
+				<!-- ユーザーID -->			
+				<div class="form-group">
+					<label for="userId"th:text="#{userId}"></label>
+					<input type="text" class="form-control"th:field="*{userId}"
+					th:errorclass="is-invalid" readonly/>			
+				</div>
+				<!-- パスワード -->
+				<div class="form-group">
+					<label for="password" th:text="#{password}"></label>
+					<input type="password"  class="form-control"th:field="*{password}"
+					 th:errorclass="is-invalid" id="password"/>
+		 			<div class="invalid-feedback" th:errors="*{password}"></div> 
+					<button id="btn-update-pass" class="btn btn-secondary" type="button" name="updatePass">
+						パスワード変更
+					</button>
+				</div>
+				
+				<!-- ユーザー名 -->
+				<div class="form-group">
+					<label for="userName" th:text="#{userName}"></label>
+					<input type="text" class="form-control"th:field="*{appUserName}"
+					th:errorclass="is-invalid" id="appUserName"/>
+		 			<div class="invalid-feedback" th:errors="*{appUserName}"></div>  			
+					<button id="btn-update-name" class="btn btn-secondary" type="button" name="updateName">
+						ユーザー名変更
+					</button>
+				</div>
+				<!-- 性別 -->			
+				<div class="form-group">
+					<label for="gender" th:text="#{gender}"></label>
+					<input type="text" class="form-control" 
+					th:value="*{gender==1?'男性':'女性'}" readonly>
+				</div>			
+			</form>
+			<a class="nav-link" th:href="@{'/user/delete'}">
+				-退会はこちら-
+			</a>
+		</div>		
+	</div>
+</body>
+</html>

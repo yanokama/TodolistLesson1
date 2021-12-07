@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+<head>
+	<title>todo一覧</title>
+	<!-- 個別CSS読み込み -->
+	<link rel="stylesheet" th:href="@{/css/todo/title.css}">
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+    integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+	<!-- 個別JS読み込み -->
+	<script th:src="@{/js/todo/title.js}" defer></script> 
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="header border-bottom">
+			<h1 class="h2">タイトル一覧</h1>
+		</div>
+		<!-- 検索 -->
+
+		<!-- 一覧表示 -->
+		<div>
+			<table class="table table-hover title-table">
+				<thead class="thead-light">
+					<tr>
+						<th class="col-width-name">リスト名</th>
+						<th class="col-width-edit"></th>	
+						<th class="col-width-delete"></th>	
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="item:${TitleForms}">
+						<td th:text="${item.listName}" class="col-width-name"></td>
+						<td class="col-edit">
+							<a class="btn btn-outline-primary" th:href="@{'/todo/todo/'
+								+ ${item.listId}}">
+								<i class="fas fa-edit"></i>	
+							</a>				
+						</td>
+						<td class="col-width-delete">
+							<form id="title-delete-form" method="post" 
+								th:action="@{/todo/title/delete}" class="form-signup">								
+								<input type = "hidden" th:value="${item.listId}" name="listId">							
+								<!-- 削除ボタン -->
+								<button id="btn-delete" class="btn btn-outline-danger btn-circle title-delete-btn" 
+								type="button" name="delete">
+									<i class="fas fa-times"></i>
+								</button>
+							 </form>	
+						</td>	
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<form id="title-create-form" method="post" th:action="@{/todo/title}"
+			class="form-signup">
+			<!-- ボタンエリア -->	
+			<div>
+			<!-- 追加ボタン -->
+				<button class="btn btn-primary btn-lg" type="submit" name="insert">
+					<i class="fas fa-plus"></i>
+				</button>
+			</div>
+		</form>
+	</div>
+</body>
+</html>

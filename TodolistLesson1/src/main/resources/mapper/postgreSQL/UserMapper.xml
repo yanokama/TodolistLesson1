@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Mapperとxmlのマッピング -->
+<mapper namespace="com.example.TodolistLesson.repository.UserMapper">
+
+<!-- マッピング定義（ユーザー） -->
+<resultMap type="com.example.TodolistLesson.domain.user.model.MUser" id="user">
+	<id column="user_id" property="userId"/>
+	<result column="user_name" property="appUserName"/>	
+	<result column="password" property="password"/>
+	<result column="user_name" property="appUserName"/>
+	<result column="gender" property="gender"/>
+	<result column="role" property="role"/>
+</resultMap>
+
+	<!-- ユーザー1件登録 -->
+	<insert id="insertOne" >
+		insert into m_user(
+			 user_id
+			,password
+			,user_name
+			,gender
+			,role
+		)
+		values(
+			 #{userId}
+			,#{password}
+			,#{appUserName}
+			,#{gender}
+			,#{role}
+		)
+	</insert>
+ 
+	<!-- ユーザー１件更新 -->
+	<update id="updateOne">
+		update
+			m_user
+		set
+			user_name = #{userName}
+		where
+			user_id = #{userId}	
+	</update>
+	
+	<!-- ユーザーパスワード更新 -->
+	<update id="updatePass">
+		update
+			m_user
+		set
+			password = #{password}
+		where
+			user_id = #{userId}	
+	</update>
+
+	<!-- ユーザー１件削除 -->
+	<delete id ="deleteOne">
+		delete from
+			m_user
+		where
+			user_id = #{userId}	
+	</delete>
+	
+	<!-- ログインユーザー情報取得 -->
+	<select id="findLoginUser" resultMap="user">
+		select
+			*
+		from
+			m_user
+		where
+			user_id = #{userId}
+	</select>	
+	
+	<!-- ユーザー1件取得（存在確認） -->
+	<select id="findOne" resultType="_int" >
+		select 
+			count(*)
+		from
+			m_user
+		where
+			user_id = #{userId}
+	</select>
+</mapper>

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Mapperとxmlのマッピング -->
+<mapper namespace="com.example.TodolistLesson.repository.TodoMapper">
+
+<!-- マッピング定義（Title）-->
+<resultMap type="com.example.TodolistLesson.domain.user.model.Title" id="title">
+	<id column="user_id" property="userId"/>
+	<id column="list_id" property="listId"/>
+	<result column="list_name" property="listName"/>
+	<result column="color" property="color"/>
+</resultMap>
+<!-- マッピング定義（todo）-->
+<resultMap type="com.example.TodolistLesson.domain.user.model.Todo" id="todo">
+	<id column="list_id" property="listId"/>
+	<id column="item_id" property="itemId"/>
+	<result column="item_name" property="itemName"/>
+	<result column="done_flg" property="doneFlg"/>
+	<result column="priority" property="priority"/>
+	<result column="importance" property="importance"/>	
+</resultMap>
+
+	<!-- Title取得 -->
+	<select id="findTitle" resultType="title">
+		select
+			*
+		from
+			t_title
+		<where>
+			user_id like '%' || #{userId} || '%'
+		</where>
+	</select>
+	
+	<!-- Title1件取得 -->
+	<select id="findTitleOne" resultType="title">
+		select
+			*
+		from
+			t_title
+		<where>
+			list_id = #{listId} 
+		</where>
+	</select>	
+	
+	<!-- タイトル1件登録 -->
+	<insert id="insertTitle" useGeneratedKeys="true" keyProperty="listId">
+		insert into t_title(
+			<!--list_id -->
+			user_id
+			,list_name
+			,color
+		)
+		values(
+			<!-- #{listId}  -->
+			#{userId}
+			,#{listName}
+			,#{color}
+		)
+	</insert>
+	
+	<!-- タイトル１件更新 -->
+	<update id="updateTitle">
+		update
+			t_title
+		set
+			list_name = #{listName}
+			,color = #{color}
+		where
+			list_id = #{listId}			
+			and user_id = #{userId}
+	</update>
+	
+	<!-- タイトル１件削除 -->
+	<delete id ="deleteTitle">
+		delete from
+			t_title
+		where
+			list_id = #{listId}	
+	</delete>	
+	
+	<!-- タイトル削除の際、紐つくtodoも全て削除 -->
+	<delete id ="deleteTodoByTitle">
+		delete from
+			t_todo_item
+		where
+			list_id = #{listId}	
+	</delete>	
+	
+	<!-- ユーザ―に紐つくタイトル全削除 -->
+	<delete id ="deleteUsersTitle">
+		delete from
+			t_title
+		where
+			user_id = #{userId}	
+	</delete>		
+	
+	<!-- ユーザに紐つくtodo全削除 -->
+	<delete id ="deleteUsersTodo">
+		delete from
+			t_todo_item
+		where
+			list_id in
+		<foreach item="listId" collection="listIds"
+			open="(" separator="," close=")">
+			 #{listId}
+		</foreach>
+	</delete>	
+	
+	<!-- todo取得 -->
+	<select id="findTodo" resultType="todo">
+		select
+			*
+		from
+			t_todo_item
+		<where>
+			list_id = #{listId}
+			and done_flg = 0			
+		</where>
+	</select>
+
+	<!-- 完了済み取得 -->
+	<select id="findCompletedTodo" resultType="todo">
+		select
+			*
+		from
+			t_todo_item
+		<where>
+			list_id = #{listId}
+			and done_flg = 1
+		</where>
+	</select>	
+	
+	<!-- todo1件登録 -->
+	<insert id="insertTodo" useGeneratedKeys="true" keyProperty="itemId">
+		insert into t_todo_item(
+			<!--item_id -->
+			list_id 
+			,item_name
+			,done_flg
+			,priority
+			,importance
+		)
+		values(
+			<!-- #{itemId}  -->
+			#{listId}
+			,#{itemName}
+			,#{doneFlg}
+			,#{priority}	
+			,#{importance}
+		)
+	</insert>
+	
+	<!-- todo１件更新 -->
+	<update id="updateTodo">
+		update
+			t_todo_item
+		set
+			item_name = #{itemName}
+			,done_flg = #{doneFlg}
+			,priority = #{priority}
+			,importance = #{importance}
+		where
+			item_id = #{itemId}
+			and list_id = #{listId}	
+	</update>
+	
+	<!-- todo１件削除 -->
+	<delete id ="deleteTodo">
+		delete from
+			t_todo_item
+		where
+			item_id = #{itemId}	
+	</delete>	
+
+</mapper>

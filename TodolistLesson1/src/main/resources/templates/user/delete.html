@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+	<title>退会</title>
+	<!-- CSS読み込み -->
+	<link rel="stylesheet" th:href="@{/css/user/setting.css}"> 
+	<!-- JS読み込み -->
+	<script th:src="@{/js/user/delete.js}" defer></script>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="header border-bottom">
+			<h1 class="h2">退会</h1>		
+		</div>
+		<P class="text-center">保存されたデータは全て削除されます</P>
+		<form id="user-delete-form" method="post" th:action="@{/user/delete}"
+			class="form-signup" th:object="${userDeleteForm}" >
+			<div class="form-group text-center">
+				<button id="btn-delete" class="btn btn-secondary" type="button">
+					退会する
+				</button>
+			</div>
+		</form>
+	</div>
+</body>
+</html>
