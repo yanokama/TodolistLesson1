@@ -11,10 +11,10 @@ import com.example.TodolistLesson.domain.user.model.MUser;
 public interface UserMapper {
 	
 	/**ユーザー登録*/
-	public int insertOne(MUser user);
+	public void insertOne(MUser user);
 	
 	/**ユーザー更新 */
-	public void updateOne(@Param("userId") String userId,
+	public void updateName(@Param("userId") String userId,
 			@Param("userName") String userName);
 
 	/**ユーザーパスワード更新 */

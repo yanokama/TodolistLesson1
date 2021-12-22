@@ -34,7 +34,7 @@
 	</insert>
  
 	<!-- ユーザー１件更新 -->
-	<update id="updateOne">
+	<update id="updateName">
 		update
 			m_user
 		set

@@ -74,13 +74,13 @@ public class UserMapperTest {
 	//updateのテスト
 	@Test
 	@Sql("/testdata.sql")	
-	public void updateOneTest() {
+	public void updateNameTest() {
 		MUser newUser = new MUser();
 		newUser.setUserId("testuser1@co.jp");
 		newUser.setAppUserName("test user1 update");
 		newUser.setPassword("$2a$08$/fGFp9vDqYcbLrTxchxQluW4N43/DnDqIvAAE9GK3ZfJKFE7.OLg2");
 		newUser.setGender(2);
-		mapper.updateOne(newUser.getUserId(), newUser.getAppUserName());
+		mapper.updateName(newUser.getUserId(), newUser.getAppUserName());
 		
 		MUser actualUser =
 			jdbcOperations.queryForObject(

@@ -22,6 +22,16 @@ public class UserServiceImpl implements UserService,
 	
 	@Autowired
 	private PasswordEncoder encoder;
+
+
+	public UserServiceImpl() {
+		
+	}
+	//テストで使うコンストラクタ作成する
+	public UserServiceImpl(UserMapper usermapper, PasswordEncoder encoder) {
+		this.mapper = usermapper;
+		this.encoder = encoder;
+	}
 	
 	/*UserDetails Service の実装*/
 	/*ユーザー取得*/	
@@ -58,7 +68,7 @@ public class UserServiceImpl implements UserService,
 	@Override
 	public void updateUserName(String userId,
 			String userName) {
-		mapper.updateOne(userId, userName);
+		mapper.updateName(userId, userName);
 	}
 	
 	/*ユーザーパスワード更新*/
