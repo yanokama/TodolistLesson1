@@ -8,6 +8,7 @@ import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -30,8 +31,44 @@ public class UserServiceImplTest {
 		userService = new UserServiceImpl(userMapper, encoder);
 	}
 	
-	//ユーザ取得のテスト１（ログイン）
-    //ユーザ取得のテスト２（存在確認）
+	//ユーザ取得のテスト１（成功）
+	@Test
+	void loadUserByUsernameTest1() {
+		String userId = "testuser1@co.jp";
+		MUser user = new MUser();
+		user.setUserId(userId);
+		user.setAppUserName("testtestuser1 user1");
+		user.setGender(2);
+		user.setRole("ROLE_GENERAL");
+		when(userMapper.findLoginUser(userId)).thenReturn(user);
+		MUser actualUser = (MUser) userService.loadUserByUsername(userId);
+		assertAll(
+			() -> assertEquals(user.getUserId(), actualUser.getUserId()),
+			() -> assertEquals(user.getAppUserName(), actualUser.getAppUserName()),
+			() -> assertEquals(user.getGender(), actualUser.getGender()),
+			() -> assertEquals(user.getRole(), actualUser.getRole()),
+			() -> assertTrue(actualUser.isAccountNonExpired()),
+			() -> assertTrue(actualUser.isAccountNonLocked()),
+			() -> assertTrue(actualUser.isCredentialsNonExpired()),
+			() -> assertTrue(actualUser.isEnabled())
+		);		
+	}
+	//ユーザ取得のテスト２（失敗時は例外発生する）
+	@Test
+	void loadUserByUsernameTest2() {
+		String userId = "testuser1@co.jp";
+		MUser user = new MUser();
+				user.setUserId(userId);
+				user.setAppUserName("test user1");
+				user.setGender(2);
+				user.setRole("ROLE_GENERAL");
+		when(userMapper.findLoginUser(userId)).thenReturn(user);
+		assertThrows(UsernameNotFoundException.class, () -> {
+			userService.loadUserByUsername("notexist@co.jp");
+		});
+	}	
+	
+    //ユーザ存在確認のテスト
 	@Test
 	public void getUserOneTest() {
 		//UserMapperの戻り値を設定

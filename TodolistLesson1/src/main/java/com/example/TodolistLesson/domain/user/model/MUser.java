@@ -57,6 +57,6 @@ public class MUser implements UserDetails {
 	
 	public boolean isEnabled() {
 		return true;
-}
+	}
 	
 }
