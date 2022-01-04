@@ -13,13 +13,13 @@ jQuery(function($){
 	});	
 	
 	/**todoを更新した時の処理 */	
-	$('tbody input').change(function(){		
+	$('tbody input, tbody select').change(function(){		
 	    const todo = $(this).parents('.todo');///あとで
 	    const itemId = todo.find('input[name="itemId"]').val();
 	    const listId = todo.find('input[name="listId"]').val();
 	    const itemName = todo.find('input[name="itemName"]').val();
-	    const priority = todo.find('input[name="priority"]').val();
-	    const importance = todo.find('input[name="importance"]').val();
+	    const priority = todo.find('select[name="priority"]').val();
+	    const importance = todo.find('select[name="importance"]').val();
 	    const is_done = todo.find('input[name="doneFlg"]').prop("checked");
 	    let doneFlg;
 	    if(is_done == true) {

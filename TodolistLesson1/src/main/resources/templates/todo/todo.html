@@ -54,12 +54,24 @@
 								class="border border-light rounded input-text" placeholder="todoを入力">	
 						</td>
 						<td>	
+							<!-- 
 							<input type="number" name="priority" th:value="${todoForm.priority}" min="1" max= "5"
 							 	class="border border-light rounded  ">
+							-->
+							<select name="priority" class="border border-light rounded " >
+								<option th:each="i : ${#numbers.sequence(1, 5)}" th:value="${i}"
+								 th:selected="${i==todoForm.priority}" th:text="${i}">
+							</select>
 						</td>
-						<td>	
+						<td>
+							<!-- 	
 							<input type="number" name="importance" th:value="${todoForm.importance}" min="1" max= "5"
 								class="border border-light rounded ">	
+ 							-->
+							<select name="importance" class="border border-light rounded " >
+								<option th:each="i : ${#numbers.sequence(1, 5)}" th:value="${i}"
+								 th:selected="${i==todoForm.importance}" th:text="${i}">
+							</select>
 						</td>
 						<td>
 							<form class="btn-circle todo-delete-form" method="post" th:action="@{/todo/todo}">	
@@ -110,13 +122,25 @@
 								style="text-decoration:line-through" 
 								class="border border-light rounded input-text" placeholder="todoを入力" >	
 						</td>
-						<td>	
+						<td>
+							<!-- 
 							<input type="number" name="priority" th:value="${todoForm.priority}" min="1" max= "5"
 								class="border border-light rounded ">
+ 							-->
+							<select name="priority" class="border border-light rounded " >
+								<option th:each="i : ${#numbers.sequence(1, 5)}" th:value="${i}"
+								 th:selected="${i==todoForm.priority}" th:text="${i}">
+							</select>
 						</td>
-						<td>	
+						<td>
+							<!-- 
 							<input type="number" name="importance" th:value="${todoForm.importance}" min="1" max= "5"
-								class="border border-light rounded ">	
+								class="border border-light rounded ">
+							 -->
+							<select name="importance" class="border border-light rounded " >
+								<option th:each="i : ${#numbers.sequence(1, 5)}" th:value="${i}"
+								 th:selected="${i==todoForm.importance}" th:text="${i}">
+							</select>
 						</td>
 						<td>	
 							<form class="todo-delete-form" method="post" th:action="@{/todo/todo}">									
@@ -125,7 +149,6 @@
 							    <button type="submit" name="delete" class="btn btn-secondary btn-sm">
 									<i class="fas fa-times"></i>	    
 							    </button>
-							    
 							</form>
 						</td>
 					</tr>
