@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/signup")
 @Slf4j
 public class SignupController {
 	
@@ -38,7 +38,7 @@ public class SignupController {
 		
 		model.addAttribute("genderMap", genderMap);
 		//ユーザー登録画面に遷移
-		return "user/signup";
+		return "signup/signup";
 	}
 
 	/**データベース関連の例外処理*/

@@ -20,7 +20,7 @@ function signupUser(){
 	$.ajax({
 		type: "POST",
 		chache:false,
-		url:'/user/signup',
+		url:'/signup/signup',
 		data: formData,
 		dataType: 'json',
 	}).done(function(data){

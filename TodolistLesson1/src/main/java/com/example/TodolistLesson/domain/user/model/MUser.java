@@ -54,9 +54,9 @@ public class MUser implements UserDetails {
 	public boolean isCredentialsNonExpired() {
 			return true;
 	}
-	
+
 	public boolean isEnabled() {
 		return true;
 	}
-	
+
 }

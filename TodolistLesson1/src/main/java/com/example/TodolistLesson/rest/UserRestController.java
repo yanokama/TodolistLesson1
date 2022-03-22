@@ -25,7 +25,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,8 +32,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.TodolistLesson.domain.todo.service.TodoService;
 import com.example.TodolistLesson.domain.user.model.MUser;
 import com.example.TodolistLesson.domain.user.service.UserService;
-import com.example.TodolistLesson.form.GroupOrder;
-import com.example.TodolistLesson.form.SignupForm;
 import com.example.TodolistLesson.form.UserDeleteForm;
 import com.example.TodolistLesson.form.UserSettingForm;
 import com.example.TodolistLesson.form.ValidGroup1;
@@ -54,34 +51,34 @@ public class UserRestController {
 	@Autowired
 	private MessageSource messageSource;
 	
-	/**ユーザーを登録*/
-	@PostMapping("/signup")
-	public RestResult postSignup(@Validated(GroupOrder.class) SignupForm form,
-			BindingResult bindingResult, Locale locale) {
-		//入力チェック結果
-		if(bindingResult.hasErrors()) {
-			Map<String, String> errors = new HashMap<>();
-			for(FieldError error:bindingResult.getFieldErrors()) {
-				String message = messageSource.getMessage(error, locale);
-				errors.put(error.getField(), message);
-			}
-			return new RestResult(90, errors);
-		}
-		
-		//既存のIDとの重複チェック
-		int userCount = userService.getUserOne(form.getUserId());
-		if(userCount != 0) {
-			Map<String, String> errors = new HashMap<>();			
-			String message = messageSource.getMessage("duplicateId",null, locale);			
-			errors.put("userId", message);
-			return new RestResult(90, errors);
-		}
-		
-		MUser user =modelMapper.map(form, MUser.class);
-		userService.signup(user);
-		
-		return new RestResult(0, null);
-	}
+//	/**ユーザーを登録*/
+//	@PostMapping("/signup")
+//	public RestResult postSignup(@Validated(GroupOrder.class) SignupForm form,
+//			BindingResult bindingResult, Locale locale) {
+//		//入力チェック結果
+//		if(bindingResult.hasErrors()) {
+//			Map<String, String> errors = new HashMap<>();
+//			for(FieldError error:bindingResult.getFieldErrors()) {
+//				String message = messageSource.getMessage(error, locale);
+//				errors.put(error.getField(), message);
+//			}
+//			return new RestResult(90, errors);
+//		}
+//		
+//		//既存のIDとの重複チェック
+//		int userCount = userService.getUserOne(form.getUserId());
+//		if(userCount != 0) {
+//			Map<String, String> errors = new HashMap<>();			
+//			String message = messageSource.getMessage("duplicateId",null, locale);			
+//			errors.put("userId", message);
+//			return new RestResult(90, errors);
+//		}
+//		
+//		MUser user =modelMapper.map(form, MUser.class);
+//		userService.signup(user);
+//		
+//		return new RestResult(0, null);
+//	}
 
 	/**パスワード更新*/
 	@PutMapping("/updatePass")	
