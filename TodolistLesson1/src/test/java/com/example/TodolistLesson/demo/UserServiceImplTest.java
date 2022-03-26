@@ -18,26 +18,25 @@ import com.example.TodolistLesson.domain.user.service.impl.UserServiceImpl;
 import com.example.TodolistLesson.repository.UserMapper;
 
 public class UserServiceImplTest {
-	
+
 	UserMapper userMapper;
 	UserService userService;
-	
+
 	@BeforeEach
 	void setUp() {
-        // UserMapperのモックを作成		
+        // UserMapperのモックを作成
 		userMapper = mock(UserMapper.class);
 		PasswordEncoder encoder = new BCryptPasswordEncoder();
-		//UserMapperのモックを利用してUserServiceImplインスタンスを作成		
+		//UserMapperのモックを利用してUserServiceImplインスタンスを作成
 		userService = new UserServiceImpl(userMapper, encoder);
 	}
-	
-	//ユーザ取得のテスト１（成功）
+
 	@Test
-	void loadUserByUsernameTest1() {
+	void 該当ユーザが存在する場合loadUserByUsernameでユーザーが取得される() {
 		String userId = "testuser1@co.jp";
 		MUser user = new MUser();
 		user.setUserId(userId);
-		user.setAppUserName("testtestuser1 user1");
+		user.setAppUserName("testuser1 user1");
 		user.setGender(2);
 		user.setRole("ROLE_GENERAL");
 		when(userMapper.findLoginUser(userId)).thenReturn(user);
@@ -51,71 +50,81 @@ public class UserServiceImplTest {
 			() -> assertTrue(actualUser.isAccountNonLocked()),
 			() -> assertTrue(actualUser.isCredentialsNonExpired()),
 			() -> assertTrue(actualUser.isEnabled())
-		);		
+		);
 	}
-	//ユーザ取得のテスト２（失敗時は例外発生する）
+
 	@Test
-	void loadUserByUsernameTest2() {
-		String userId = "testuser1@co.jp";
-		MUser user = new MUser();
-				user.setUserId(userId);
-				user.setAppUserName("test user1");
-				user.setGender(2);
-				user.setRole("ROLE_GENERAL");
-		when(userMapper.findLoginUser(userId)).thenReturn(user);
+	void 該当ユーザ無しの場合loadUserByUsernameで例外が発生する() {
+		String userId = "notexist@co.jp";
+		when(userMapper.findLoginUser(userId)).thenReturn(null);
 		assertThrows(UsernameNotFoundException.class, () -> {
-			userService.loadUserByUsername("notexist@co.jp");
+			userService.loadUserByUsername(userId);
 		});
-	}	
-	
-    //ユーザ存在確認のテスト
+	}
+
 	@Test
-	public void getUserOneTest() {
-		//UserMapperの戻り値を設定
-		when(userMapper.findOne("testuser1@co.jp")).thenReturn(1);
-		assertEquals(userService.getUserOne("testuser1@co.jp"), 1);
-		verify(userMapper,times(1)).findOne("testuser1@co.jp");
-	}    
-    
-	//ユーザ登録のテスト
+	public void getUserOneでIDヒット件数を取得できる() {
+		String userId = "testuser1@co.jp";
+		//setup
+		when(userMapper.findOne(userId)).thenReturn(1);
+		//exercise
+		int count = userService.getUserOne(userId);
+		//verify
+		assertEquals(count, 1);
+		verify(userMapper,times(1)).findOne(userId);
+	}
+
 	@Test
-	public void signupTest() {
+	public void signupで登録処理を呼び出す() {
+		//setup
 		MUser newUser = new MUser();
-		newUser.setUserId("testuser2@co.jp");
-		newUser.setAppUserName("test user2");
+		newUser.setUserId("testuser1@co.jp");
+		newUser.setAppUserName("test user1");
 		newUser.setPassword("password");
 		newUser.setGender(1);
 		doNothing().when(userMapper).insertOne(newUser);
+		//exercise
 		userService.signup(newUser);
+		//verify
 		verify(userMapper, times(1)).insertOne(newUser);
 	}
-	
-	//ユーザー名更新のテスト
+
 	@Test
-	public void updateUserNameTest() {
-		doNothing().when(userMapper).updateName("testuser1@co.jp", "hogehoge");
-		userService.updateUserName("testuser1@co.jp", "hogehoge");
-		verify(userMapper, times(1)).updateName("testuser1@co.jp", "hogehoge");
+	public void updateUserNameで更新処理を実行する() {
+		String userId = "testuser1@co.jp";
+		String newName = "hogehoge";
+		//setup
+		doNothing().when(userMapper).updateName(userId, newName);
+		//exercise
+		userService.updateUserName(userId, newName);
+		//verify
+		verify(userMapper, times(1)).updateName(userId, newName);
 	}
 
-	//パスワード更新のテスト
 	@Test
-	public void updatePassTest() {
-		PasswordEncoder encoder = new BCryptPasswordEncoder();		
-		// forClass()メソッドで、その型の容れ物（変数）をつくる		
+	public void updatePassでパスワードを暗号化して更新する() {
+		String userId = "testuser1@co.jp";
+		PasswordEncoder encoder = new BCryptPasswordEncoder();
+		// forClass()メソッドで、その型の容れ物（変数）をつくる
 		ArgumentCaptor<String> argCaptor = ArgumentCaptor.forClass(String.class);
 		//任意の引数でモック動作させる場合はanyが使える
 		doNothing().when(userMapper).updatePass(anyString(), anyString());
-		userService.updateUserPass("testuser1@co.jp", "password");
+		//exercise
+		userService.updateUserPass(userId, "password");
+		//verify
 		verify(userMapper, times(1)).updatePass(anyString(), argCaptor.capture());
 		assertThat(encoder.matches("password", argCaptor.getValue()));
-	}	
-	
+	}
+
 	//ユーザー削除のテスト
 	@Test
-	public void deleteUserTest() {
-		doReturn(1).when(userMapper).deleteOne("testuser1@co.jp");
-		userService.deleteUser("testuser1@co.jp");
-		verify(userMapper, times(1)).deleteOne("testuser1@co.jp");		
+	public void deleteUserで削除処理を実行する() {
+		//setUp
+		String userId = "testuser1@co.jp";
+		doNothing().when(userMapper).deleteOne(userId);
+		//exercise
+		userService.deleteUser(userId);
+		//verify
+		verify(userMapper, times(1)).deleteOne(userId);
 	}
 }
