@@ -7,9 +7,14 @@ import java.util.Map;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,7 +33,8 @@ public class SignupRestController {
 	@Autowired
 	private ModelMapper modelMapper;
 	@Autowired
-	private MessageSource messageSource;	
+	private MessageSource messageSource;
+	
 	/**ユーザーを登録*/
 	@PostMapping("/signup")
 	public RestResult postSignup(@Validated(GroupOrder.class) SignupForm form,
@@ -52,9 +58,40 @@ public class SignupRestController {
 			return new RestResult(90, errors);
 		}
 		
-		MUser user =modelMapper.map(form, MUser.class);
+		MUser user = modelMapper.map(form, MUser.class);
 		userService.signup(user);
-		
 		return new RestResult(0, null);
 	}
+	
+	/**データベース関連の例外処理*/
+	@ExceptionHandler(DataAccessException.class)
+	public String dataAccessExceptionHandler(DataAccessException e, Model model) {
+
+		//空文字をセット
+		model.addAttribute("error","");
+
+		//メッセージをModelに登録
+		model.addAttribute("message","UserRestController で例外が発生しました");
+
+		//HTTPのエラーコード（500）をModelに登録
+		model.addAttribute("status", HttpStatus.INTERNAL_SERVER_ERROR);
+
+		return "error";
+	}
+	
+	/** その他の例外処理 */
+	@ExceptionHandler(Exception.class)
+	public String exceptionHandler(Exception e, Model model) {
+
+		//空文字をセット
+		model.addAttribute("error","");
+
+		//メッセージをModelに登録
+		model.addAttribute("message","SignupRestController で例外が発生しました");
+
+		//HTTPのエラーコード（500）をModelに登録
+		model.addAttribute("status", HttpStatus.INTERNAL_SERVER_ERROR);
+
+		return "error";
+	}	
 }

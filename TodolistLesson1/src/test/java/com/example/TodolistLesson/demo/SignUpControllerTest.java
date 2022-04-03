@@ -41,5 +41,4 @@ public class SignUpControllerTest {
     }
     //signupできる
     //signupできない
-    //hoge
 }

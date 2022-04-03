@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -15,6 +16,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.example.TodolistLesson.domain.user.service.impl.UserServiceImpl;
 
+@Profile("!disable-security")  // プロファイルが"disable-security"でない場合のみこのBeanは有効化される
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {

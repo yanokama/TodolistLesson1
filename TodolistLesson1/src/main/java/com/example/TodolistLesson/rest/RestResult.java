@@ -12,6 +12,6 @@ public class RestResult {
 	private int result;
 	
 	/**エラーマップ*/
-	private Map<String, String>errors;
+	private Map<String, String> errors;
 
 }
