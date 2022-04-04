@@ -59,7 +59,7 @@ public class SignupRestController {
 		}
 		
 		MUser user = modelMapper.map(form, MUser.class);
-		userService.signup(user);
+		userService.signup(user);			
 		return new RestResult(0, null);
 	}
 	
