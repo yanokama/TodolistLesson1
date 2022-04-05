@@ -1,7 +1,6 @@
-package com.example.TodolistLesson.demo;
+package com.example.TodolistLesson.controller;
 
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -9,7 +8,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
 
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
@@ -18,19 +17,16 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
-import org.springframework.dao.DataAccessException;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import com.example.TodolistLesson.domain.user.model.MUser;
 import com.example.TodolistLesson.domain.user.service.impl.UserServiceImpl;
 import com.example.TodolistLesson.form.SignupForm;
-import com.example.TodolistLesson.repository.UserMapper;
 import com.example.TodolistLesson.rest.SignupRestController;
 
 @WebMvcTest(controllers = SignupRestController.class,
@@ -38,15 +34,10 @@ includeFilters = @ComponentScan.Filter(
 	type = FilterType.ASSIGNABLE_TYPE,
 	classes = { UserServiceImpl.class, ModelMapper.class}
 ))
-
+@WebAppConfiguration
 public class signupRestControllerTest {
-    @Autowired
+	@Autowired
     MockMvc mvc;
-//    @Autowired
-//    SignupRestController target;
-//    @Autowired
-//    private HandlerExceptionResolver handlerExceptionResolver;
-    
     @MockBean
     UserServiceImpl userService;
     @MockBean
@@ -58,14 +49,14 @@ public class signupRestControllerTest {
                 add("password", "password");
                 add("appUserName", "test user1");
                 add("gender", "1");
-            }};	    
-    
-   MockHttpServletRequestBuilder createRequest(MultiValueMap<String, String> formData) {
+            }};
+            
+    MockHttpServletRequestBuilder createRequest(MultiValueMap<String, String> formData) {
         return post("/signup/signup")
                 .params(formData)
                 .with(csrf())     
                 .accept(MediaType.APPLICATION_JSON, MediaType.TEXT_HTML);        
-   }       
+    }
 	
 	@Test
 	public void 新規登録できる() throws Exception {
@@ -115,29 +106,12 @@ public class signupRestControllerTest {
 	public void すでに存在するIDはエラー() throws Exception{
 		//setup
 		when(userService.getUserOne("testuser1@co.jp")).thenReturn(1);
-		final String expectedJson = "{\"result\":90, \"errors\":{\"userId\":\"id already exists\"}}";		
+		final String expectedJson = "{\"result\":90, \"errors\":{\"userId\":\"id already exists\"}}";	
+	    //exercise&verify		
 		mvc.perform(createRequest(validData))
 		.andExpect(status().isOk())
 		.andExpect(content().json(expectedJson));
 	}
 	
-//	@Test
-//	public void 登録失敗時はエラー画面に遷移() throws Exception{
-//		this.mvc = MockMvcBuilders.standaloneSetup(target)
-//				.setControllerAdvice(target)
-//				.build();
-//		//setup
-//		MUser newUser = new MUser();
-//		newUser.setUserId("testuser1@co.jp");
-//		newUser.setAppUserName("test user1");
-//		newUser.setPassword("password");
-//		newUser.setGender(1);
-//		doThrow(DataAccessException.class)
-//		.when(userMapper).insertOne(newUser);
-//		
-//		//exercise & verify
-//		mvc.perform(createRequest(validData))
-//		.andExpect(status().isOk())
-//        .andExpect(view().name("error"));
-//	}
+	//例外発生時のテストは別途。
 }

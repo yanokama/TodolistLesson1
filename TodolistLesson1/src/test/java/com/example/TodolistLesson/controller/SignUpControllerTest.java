@@ -1,4 +1,4 @@
-package com.example.TodolistLesson.demo;
+package com.example.TodolistLesson.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
