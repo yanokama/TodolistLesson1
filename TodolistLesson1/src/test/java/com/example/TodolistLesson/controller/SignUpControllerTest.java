@@ -26,19 +26,16 @@ public class SignUpControllerTest {
     @Autowired
     MockMvc mvc;
 
-    // UserApplicationServiceをMockitoでモック化する
     @MockBean
     UserApplicationService userService;
     @MockBean
     UserServiceImpl userServiceImpl;
 
-    //リクエストが着たら画面表示
     @Test
     void signUpにアクセスするとサインアップ画面が返される() throws Exception {
         mvc.perform(get("/signup/signup").accept(MediaType.TEXT_HTML))
                 .andExpect(status().isOk())
                 .andExpect(view().name("signup/signup"));
     }
-    //signupできる
-    //signupできない
+
 }

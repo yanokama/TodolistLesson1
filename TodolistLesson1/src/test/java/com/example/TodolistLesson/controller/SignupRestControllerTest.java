@@ -34,8 +34,7 @@ includeFilters = @ComponentScan.Filter(
 	type = FilterType.ASSIGNABLE_TYPE,
 	classes = { UserServiceImpl.class, ModelMapper.class}
 ))
-@WebAppConfiguration
-public class signupRestControllerTest {
+public class SignupRestControllerTest {
 	@Autowired
     MockMvc mvc;
     @MockBean

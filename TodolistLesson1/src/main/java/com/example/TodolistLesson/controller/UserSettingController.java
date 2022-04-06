@@ -20,8 +20,8 @@ public class UserSettingController {
 	
 	@Autowired 
 	private ModelMapper modelMapper;
-	@Autowired
-	private UserService userService;
+//	@Autowired
+//	private UserService userService;
 
 	
 	@GetMapping("/setting")
@@ -33,52 +33,5 @@ public class UserSettingController {
 		model.addAttribute("userForm", form);
 		return "user/setting";
 	}
-	
-	/**ユーザー名更新*/
-	/*		@PostMapping(value = "/setting" , params = "updateName")	
-			public String updateUsername(
-					@ModelAttribute("userForm") @Validated(ValidGroup1.class) UserSettingForm form, 
-					BindingResult bindingResult,
-					Model model) {
-	
-				if(bindingResult.hasErrors()) {			
-					model.addAttribute("userForm", form);
-					return "user/setting";
-				}
-				
-				userService.updateUserName(form.getUserId(),
-						form.getAppUserName());
-		
-				//更新成功したら、認証情報も変更
-				UserDetails user = userService.loadUserByUsername(form.getUserId());
-				SecurityContext context = SecurityContextHolder.getContext();
-				context.setAuthentication(new UsernamePasswordAuthenticationToken(
-						user, user.getPassword(), user.getAuthorities()));
-		
-				return "redirect:/user/setting";
-			}*/
 
-	/**パスワード更新*/
-	/*		@PostMapping(value = "/setting" , params = "updatePass")	
-			public String updatePass(
-					@ModelAttribute("userForm") @Validated(ValidGroup2.class) UserSettingForm form, 
-					BindingResult bindingResult,
-					Model model) {
-	
-				if(bindingResult.hasErrors()) {			
-					model.addAttribute("userForm", form);
-					return "user/setting";
-				}
-				
-				userService.updateUserPass(form.getUserId(),
-						form.getPassword());
-		
-				//更新成功したら、認証情報も変更
-				UserDetails user = userService.loadUserByUsername(form.getUserId());
-				SecurityContext context = SecurityContextHolder.getContext();
-				context.setAuthentication(new UsernamePasswordAuthenticationToken(
-						user, user.getPassword(), user.getAuthorities()));
-		
-				return "redirect:/user/setting";
-			}*/
 }
