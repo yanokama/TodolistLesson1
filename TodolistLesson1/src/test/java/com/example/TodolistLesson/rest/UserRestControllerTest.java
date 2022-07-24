@@ -14,12 +14,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.net.URI;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -48,6 +50,7 @@ public class UserRestControllerTest {
     UserServiceImpl userService;
     @MockBean
     TodoMapper todoMapper;
+
     
     //正常なデータ
     MultiValueMap<String, String> validData =
@@ -67,8 +70,8 @@ public class UserRestControllerTest {
                 add("gender", "1");
             }};            
     
-    MockHttpServletRequestBuilder createRequest(MultiValueMap<String, String> formData) {
-    	URI uri = URI.create("/user/updateName");
+    MockHttpServletRequestBuilder createRequest(String pass, MultiValueMap<String, String> formData) {
+    	URI uri = URI.create(pass);
     	return put(uri)
                 .params(formData)
                 .with(csrf())
@@ -91,9 +94,11 @@ public class UserRestControllerTest {
 		when(userService.loadUserByUsername(user.getUserId())).thenReturn(user);
 
 		//exercise&verify
-		mvc.perform(createRequest(validData))
+		mvc.perform(createRequest("/user/updatePass", validData))
 		.andExpect(status().isOk())
 		.andExpect(content().json(expectedJson));
+		verify(userService, times(1)).updateUserPass(user.getUserId(),"password");
+		
 	}
 	
 	@Test
@@ -103,7 +108,7 @@ public class UserRestControllerTest {
 		final String expectedJson = "{\"result\":90}";
 
 		//exercise&verify
-		mvc.perform(createRequest(invalidData))
+		mvc.perform(createRequest("/user/updatePass", invalidData))
 		.andExpect(status().isOk())
 		.andExpect(content().json(expectedJson));
 	}	
@@ -125,9 +130,11 @@ public class UserRestControllerTest {
 		when(userService.loadUserByUsername(user.getUserId())).thenReturn(user);
 
 		//exercise&verify
-		mvc.perform(createRequest(validData))
+		mvc.perform(createRequest("/user/updateName", validData))
 		.andExpect(status().isOk())
 		.andExpect(content().json(expectedJson));
+		verify(userService, times(1)).updateUserName(user.getUserId(),user.getAppUserName());
+
 	}
 	
 	@Test
@@ -137,7 +144,7 @@ public class UserRestControllerTest {
 		final String expectedJson = "{\"result\":90}";
 
 		//exercise&verify
-		mvc.perform(createRequest(invalidData))
+		mvc.perform(createRequest("/user/updateName", invalidData))
 		.andExpect(status().isOk())
 		.andExpect(content().json(expectedJson));
 	}

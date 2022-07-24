@@ -49,6 +49,7 @@ public class UserRestController {
 	@Autowired
 	private MessageSource messageSource;
 
+	
 	/**パスワード更新*/
 	@PutMapping("/updatePass")
 	public RestResult updatePass(
