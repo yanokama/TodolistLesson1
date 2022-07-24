@@ -88,7 +88,7 @@ public class UserMapperTest {
 		public void setUp( @Autowired DataSource dataSource) {
 			//テストデータ挿入
 			ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
-			populator.addScript(new ClassPathResource("/testdata.sql"));
+			populator.addScript(new ClassPathResource("/muser_testdata.sql"));
 			populator.execute(dataSource);
 		}
 

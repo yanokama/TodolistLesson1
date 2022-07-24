@@ -18,72 +18,72 @@ public class TodoServiceImpl implements TodoService {
 	@Autowired
 	private TodoMapper mapper;
 
-	/**タイトル一覧取得*/	
+	/**タイトル一覧取得*/
 	@Override
 	public List<Title> getTitles(String userId) {
 		return mapper.findTitle(userId);
 	}
-	
-	/**タイトル一件取得*/	
+
+	/**タイトル一件取得*/
 	@Override
 	public Title getTitleOne(Integer listId) {
 		return mapper.findTitleOne(listId);
 	}
-	
-	
+
+
 	/**タイトル追加*/
 	@Override
 	public void insertTitle(Title title) {
 		mapper.insertTitle(title);
 	}
-	
+
 	/**タイトル更新*/
 	@Override
 	public void updateTitle(Title title) {
 		mapper.updateTitle(title);
 	}
-	
+
 	/**タイトル削除*/
 	@Transactional
 	@Override
 	public void deleteTitle(Integer listId) {
-		mapper.deleteTitle(listId);	
+		mapper.deleteTitle(listId);
 		mapper.deleteTodoByTitle(listId);
 	}
-	
+
 	/**ユーザに紐つくタイトル、todo全削除*/
 	@Transactional
 	@Override
 	public void deleteUsersTodo(String userId) {
-		
+
 		List<Title> titleList = getTitles(userId);
 		List<Integer> listIds = new LinkedList<>();
 		for(Title title : titleList) {
 			listIds.add(title.getListId());
 		}
-		mapper.deleteUsersTitle(userId);		
+		mapper.deleteUsersTitle(userId);
 		if (listIds.size() > 0) {
 			mapper.deleteUsersTodo(listIds);
 		}
 	}
-	
-	/**todoリスト取得*/	
+
+	/**todoリスト取得*/
 	@Override
 	public List<Todo> getTodos(Integer todoId){
 		return mapper.findTodo(todoId);
 	}
 
-	/**完了済みリスト取得*/	
+	/**完了済みリスト取得*/
 	@Override
 	public List<Todo> getCompletedTodos(Integer todoId){
 		return mapper.findCompletedTodo(todoId);
 	}
-	
+
 	/**todo追加*/
 	public void insertTodo (Todo todo) {
 		mapper.insertTodo(todo);
 	}
-	
+
 	/**todo更新*/
 	public void updateTodo (Todo todo){
 		mapper.updateTodo(todo);
@@ -93,5 +93,5 @@ public class TodoServiceImpl implements TodoService {
 	public void deleteTodo(Integer itemId) {
 		mapper.deleteTodo(itemId);
 	}
-	
+
 }
