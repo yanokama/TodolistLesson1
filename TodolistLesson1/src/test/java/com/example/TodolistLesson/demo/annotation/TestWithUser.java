@@ -11,6 +11,6 @@ import org.springframework.security.test.context.support.WithUserDetails;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 @Test
-@WithUserDetails(userDetailsServiceBeanName = "UserDerviceImpl",
-		value = "user@example.com")
+@WithUserDetails(userDetailsServiceBeanName = "UserServiceImpl",
+		value = "testuser1@xxx.co.jp")
 public @interface TestWithUser {}

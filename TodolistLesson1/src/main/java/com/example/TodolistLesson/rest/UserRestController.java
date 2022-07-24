@@ -49,35 +49,6 @@ public class UserRestController {
 	@Autowired
 	private MessageSource messageSource;
 
-//	/**ユーザーを登録*/
-//	@PostMapping("/signup")
-//	public RestResult postSignup(@Validated(GroupOrder.class) SignupForm form,
-//			BindingResult bindingResult, Locale locale) {
-//		//入力チェック結果
-//		if(bindingResult.hasErrors()) {
-//			Map<String, String> errors = new HashMap<>();
-//			for(FieldError error:bindingResult.getFieldErrors()) {
-//				String message = messageSource.getMessage(error, locale);
-//				errors.put(error.getField(), message);
-//			}
-//			return new RestResult(90, errors);
-//		}
-//
-//		//既存のIDとの重複チェック
-//		int userCount = userService.getUserOne(form.getUserId());
-//		if(userCount != 0) {
-//			Map<String, String> errors = new HashMap<>();
-//			String message = messageSource.getMessage("duplicateId",null, locale);
-//			errors.put("userId", message);
-//			return new RestResult(90, errors);
-//		}
-//
-//		MUser user =modelMapper.map(form, MUser.class);
-//		userService.signup(user);
-//
-//		return new RestResult(0, null);
-//	}
-
 	/**パスワード更新*/
 	@PutMapping("/updatePass")
 	public RestResult updatePass(
@@ -93,7 +64,6 @@ public class UserRestController {
 			}
 			return new RestResult(90, errors);
 		}
-
 		userService.updateUserPass(form.getUserId(),
 				form.getPassword());
 
@@ -112,7 +82,6 @@ public class UserRestController {
 			@ModelAttribute("userForm") @Validated(ValidGroup1.class) UserSettingForm form,
 			BindingResult bindingResult,
 			Model model, Locale locale) {
-
 		if(bindingResult.hasErrors()) {
 			Map<String, String> errors = new HashMap<>();
 			for(FieldError error:bindingResult.getFieldErrors()) {

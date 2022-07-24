@@ -20,10 +20,7 @@ public class UserSettingController {
 	
 	@Autowired 
 	private ModelMapper modelMapper;
-//	@Autowired
-//	private UserService userService;
 
-	
 	@GetMapping("/setting")
 	public String getUser(Model model,
 		@AuthenticationPrincipal MUser user,
