@@ -24,7 +24,7 @@ import com.example.TodolistLesson.domain.user.model.Title;
 import com.example.TodolistLesson.domain.user.model.Todo;
 import com.example.TodolistLesson.form.TitleForm;
 import com.example.TodolistLesson.form.TodoForm;
-import com.example.TodolistLesson.rest.RestResult;
+import com.example.TodolistLesson.rest.CommonRestResult;
 
 @Controller
 @RequestMapping("/todo")
@@ -98,14 +98,14 @@ public class TodoController {
 	/**todo更新*/
 	@PostMapping(value = "/todo/update")
 	@ResponseBody
-	public RestResult updateTodo(@ModelAttribute TodoForm form, Model model) {
+	public CommonRestResult updateTodo(@ModelAttribute TodoForm form, Model model) {
 
 		//todo更新
 		Todo todo = modelMapper.map(form, Todo.class);
 		todoService.updateTodo(todo);
 
 		//結果の返却
-		return new RestResult(0, null);
+		return new CommonRestResult(0, null);
 	}	
 
 }

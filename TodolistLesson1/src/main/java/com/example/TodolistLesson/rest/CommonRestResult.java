@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class RestResult {
+public class CommonRestResult {
 	/**リターンコード*/
 	private int result;
 	

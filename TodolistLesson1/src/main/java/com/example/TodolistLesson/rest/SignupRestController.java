@@ -37,7 +37,7 @@ public class SignupRestController {
 	
 	/**ユーザーを登録*/
 	@PostMapping("/signup")
-	public RestResult postSignup(@Validated(GroupOrder.class) SignupForm form,
+	public CommonRestResult postSignup(@Validated(GroupOrder.class) SignupForm form,
 			BindingResult bindingResult, Locale locale) {
 		//入力チェック結果
 		if(bindingResult.hasErrors()) {
@@ -46,7 +46,7 @@ public class SignupRestController {
 				String message = messageSource.getMessage(error, locale);
 				errors.put(error.getField(), message);
 			}
-			return new RestResult(90, errors);
+			return new CommonRestResult(90, errors);
 		}
 		
 		//既存のIDとの重複チェック
@@ -55,12 +55,12 @@ public class SignupRestController {
 			Map<String, String> errors = new HashMap<>();			
 			String message = messageSource.getMessage("duplicateId",null, locale);			
 			errors.put("userId", message);
-			return new RestResult(90, errors);
+			return new CommonRestResult(90, errors);
 		}
 		
 		MUser user = modelMapper.map(form, MUser.class);
 		userService.signup(user);			
-		return new RestResult(0, null);
+		return new CommonRestResult(0, null);
 	}
 	
 	/**データベース関連の例外処理*/

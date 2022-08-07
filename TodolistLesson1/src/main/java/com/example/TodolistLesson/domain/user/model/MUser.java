@@ -10,9 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import lombok.Data;
 
 @Data
-//@NoArgsConstructor
-//@AllArgsConstructor
-//@Builder
 public class MUser implements UserDetails {
 //==========================
 // Spring で必要なフィールド
@@ -20,10 +17,10 @@ public class MUser implements UserDetails {
 	private String userId;
 	private String password;
 	private Date passUpdateDate; //不使用
-	private int loginMissTimes; //不使用
-	private boolean unlok;//不使用
-	private boolean enabled; //不使用
-	private Date userDueDate; //不使用
+	private int loginMissTimes;  //不使用
+	private boolean unlok;		 //不使用
+	private boolean enabled;	 //不使用
+	private Date userDueDate; 	 //不使用
 	//権限のCollection
 	private Collection<? extends GrantedAuthority> authority;//不使用
 
@@ -58,5 +55,4 @@ public class MUser implements UserDetails {
 	public boolean isEnabled() {
 		return true;
 	}
-
 }

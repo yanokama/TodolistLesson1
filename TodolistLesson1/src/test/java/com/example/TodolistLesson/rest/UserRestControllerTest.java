@@ -51,7 +51,6 @@ public class UserRestControllerTest {
     @MockBean
     TodoMapper todoMapper;
 
-    
     //正常なデータ
     MultiValueMap<String, String> validData =
             new LinkedMultiValueMap<>() {{
@@ -65,12 +64,14 @@ public class UserRestControllerTest {
     MultiValueMap<String, String> invalidData =
             new LinkedMultiValueMap<>() {{
                 add("userId", "testuser1@co.jp");
-                add("password", ""); //パスワードがブランク
+                add("password", ""); 	//パスワードがブランク
                 add("appUserName", "");	//名前がブランク
                 add("gender", "1");
             }};            
     
-    MockHttpServletRequestBuilder createRequest(String pass, MultiValueMap<String, String> formData) {
+    MockHttpServletRequestBuilder createRequest(
+    		String pass, 
+    		MultiValueMap<String, String> formData) {
     	URI uri = URI.create(pass);
     	return put(uri)
                 .params(formData)

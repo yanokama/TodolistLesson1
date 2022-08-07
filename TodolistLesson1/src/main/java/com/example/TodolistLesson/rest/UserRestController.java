@@ -45,14 +45,13 @@ public class UserRestController {
 	private UserService userService;
 	@Autowired
 	private TodoService todoService;
-
 	@Autowired
 	private MessageSource messageSource;
 
 	
 	/**パスワード更新*/
 	@PutMapping("/updatePass")
-	public RestResult updatePass(
+	public CommonRestResult updatePass(
 			@ModelAttribute("userForm") @Validated(ValidGroup2.class) UserSettingForm form,
 			BindingResult bindingResult,
 			Model model, Locale locale) {
@@ -63,7 +62,7 @@ public class UserRestController {
 				String message = messageSource.getMessage(error, locale);
 				errors.put(error.getField(), message);
 			}
-			return new RestResult(90, errors);
+			return new CommonRestResult(90, errors);
 		}
 		userService.updateUserPass(form.getUserId(),
 				form.getPassword());
@@ -74,12 +73,12 @@ public class UserRestController {
 		context.setAuthentication(new UsernamePasswordAuthenticationToken(
 				user, user.getPassword(), user.getAuthorities()));
 
-		return new RestResult(0, null);
+		return new CommonRestResult(0, null);
 	}
 
 	/**ユーザー名更新*/
 	@PutMapping("/updateName")
-	public RestResult updateUsername(
+	public CommonRestResult updateUsername(
 			@ModelAttribute("userForm") @Validated(ValidGroup1.class) UserSettingForm form,
 			BindingResult bindingResult,
 			Model model, Locale locale) {
@@ -89,7 +88,7 @@ public class UserRestController {
 				String message = messageSource.getMessage(error, locale);
 				errors.put(error.getField(), message);
 			}
-			return new RestResult(90, errors);
+			return new CommonRestResult(90, errors);
 		}
 
 		userService.updateUserName(form.getUserId(),
@@ -101,7 +100,7 @@ public class UserRestController {
 		context.setAuthentication(new UsernamePasswordAuthenticationToken(
 				user, user.getPassword(), user.getAuthorities()));
 
-		return new RestResult(0, null);
+		return new CommonRestResult(0, null);
 	}
 
 	@DeleteMapping("/delete")

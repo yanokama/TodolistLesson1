@@ -50,16 +50,16 @@ public class TitleListController {
 	}
 
 	/**タイトル追加*/
-	@PostMapping(value = "/title" , params = "insert")
-	public String insertTitle(Model model,
-			@AuthenticationPrincipal MUser user) {
-		Title title = new Title();		
-		title.setUserId(user.getUserId());
-		title.setListName("new todolist");
-		//title追加
-		todoService.insertTitle(title);
-		return "redirect:/todo/title";
-	}
+//	@PostMapping(value = "/title" , params = "insert")
+//	public String insertTitle(Model model,
+//			@AuthenticationPrincipal MUser user) {
+//		Title title = new Title();		
+//		title.setUserId(user.getUserId());
+//		title.setListName("new todolist");
+//		//title追加
+//		todoService.insertTitle(title);
+//		return "redirect:/todo/title";
+//	}
 
 	/**タイトル更新*/
 	@PostMapping(value = "/title/update")	
