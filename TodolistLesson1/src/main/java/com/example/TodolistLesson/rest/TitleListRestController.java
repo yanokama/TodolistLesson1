@@ -43,6 +43,16 @@ public class TitleListRestController {
 		todoService.updateTitle(title);
 
 		return new RestResultOfTitle(0, null, title);
-	}		
+	}
+	
+	/**タイトル削除*/	
+	@PutMapping(value = "/title", params = "delete")
+	public RestResultOfTitle deleteTitle(@ModelAttribute("listId") Integer listId, Model model) {
+
+		todoService.deleteTitle(listId);
+		Title deletedTitle = new Title();
+		deletedTitle.setListId(listId);
+		return new RestResultOfTitle(0, null, deletedTitle);
+	}			
 
 }

@@ -62,22 +62,22 @@ public class TitleListController {
 //	}
 
 	/**タイトル更新*/
-	@PostMapping(value = "/title/update")	
-	public String updateTodo(@ModelAttribute TitleForm form, Model model) {
-
-		//title更新
-		Title title = modelMapper.map(form, Title.class);
-		todoService.updateTitle(title);
-
-		return "redirect:/todo/todo/" + form.getListId();
-	}		
+//	@PostMapping(value = "/title/update")	
+//	public String updateTodo(@ModelAttribute TitleForm form, Model model) {
+//
+//		//title更新
+//		Title title = modelMapper.map(form, Title.class);
+//		todoService.updateTitle(title);
+//
+//		return "redirect:/todo/todo/" + form.getListId();
+//	}		
 
 	/**タイトル削除*/	
-	@PostMapping(value = "/title/delete")
-	public String deleteTitle(@ModelAttribute("listId") Integer listId, Model model) {
-
-		//title削除
-		todoService.deleteTitle(listId);		
-		return "redirect:/todo/title";
-	}		
+//	@PostMapping(value = "/title/delete")
+//	public String deleteTitle(@ModelAttribute("listId") Integer listId, Model model) {
+//
+//		//title削除
+//		todoService.deleteTitle(listId);		
+//		return "redirect:/todo/title";
+//	}		
 }

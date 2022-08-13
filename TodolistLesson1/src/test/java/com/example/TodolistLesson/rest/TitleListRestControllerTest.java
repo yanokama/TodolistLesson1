@@ -22,23 +22,18 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.context.support.WithSecurityContextFactory;
+
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import com.example.TodolistLesson.demo.annotation.TestWithUser;
 import com.example.TodolistLesson.demo.annotation.WithMockCustomUser;
 import com.example.TodolistLesson.demo.annotation.WithMockCustomUserSecrityContextFactory;
 import com.example.TodolistLesson.domain.todo.service.impl.TodoServiceImpl;
-import com.example.TodolistLesson.domain.user.model.MUser;
 import com.example.TodolistLesson.domain.user.model.Title;
 import com.example.TodolistLesson.domain.user.service.impl.UserServiceImpl;
 import com.example.TodolistLesson.form.TitleForm;
-import com.example.TodolistLesson.repository.TodoMapper;
-import com.example.TodolistLesson.repository.UserMapper;
 
 @WebMvcTest(controllers = TitleListRestController.class,
 includeFilters = @ComponentScan.Filter( 
@@ -56,7 +51,10 @@ public class TitleListRestControllerTest {
 	@MockBean 
 	ModelMapper modelMapper;
 
-	/*リクエスト作成メソッド*/
+	//テストデータ共通
+	String userId = "testuser@xxx.co.jp";
+
+	//各テストから呼び出される
     MockHttpServletRequestBuilder createRequest(String pass, String method, 
     		MultiValueMap<String, String> params ) {
     	URI uri = URI.create(pass);
@@ -70,29 +68,38 @@ public class TitleListRestControllerTest {
 	@Test
 	@WithMockCustomUser
 	public void タイトルを追加できる() throws Exception {
+		//テストデータ準備
+		String listName = "new todolist";
+		Title newtitle = new Title();
+		newtitle.setListId(null);
+		newtitle.setUserId(userId);
+		newtitle.setListName(listName);
 	    MultiValueMap<String, String> reqPramOftitle =
 	            new LinkedMultiValueMap<>();
+	    /*listIdは自動採番なのでチェック対象外としている*/
 		String expectedJson = "{"
 				+ "\"result\":0, \"errors\":null,"
 				+ "\"titles\":["
 					+ "{\"userId\":\"testuser@xxx.co.jp\","
 					+ " \"listName\":\"new todolist\"}]"
 				+ "}";
+		
 		//モック化
-		doNothing().when(todoService).insertTitle(null);
+		doNothing().when(todoService).insertTitle(newtitle);
 
 		//exercise&verify
 		mvc.perform(createRequest("/todo/title", "insert", reqPramOftitle))
 		.andExpect(status().isOk())
 		.andExpect(content().json(expectedJson));
+		verify(todoService, times(1)).insertTitle(newtitle);		
 	}
 	
 	@Test
 	@WithMockCustomUser
 	public void タイトルを更新できる() throws Exception {
-	    //タイトルデータ
-		String userId = "testuser@xxx.co.jp";
+	    //テストデータ準備
 		String listName = "updated todolist";
+		
 		TitleForm titleForm = new TitleForm();
 		titleForm.setListId(1);
 		titleForm.setUserId(userId);
@@ -102,6 +109,7 @@ public class TitleListRestControllerTest {
 		title.setListId(1);
 		title.setUserId(userId);
 		title.setListName(listName);
+		
 	    MultiValueMap<String, String> reqPramOftitle =
 	            new LinkedMultiValueMap<>() {{
 	                add("listId", "1");
@@ -125,5 +133,36 @@ public class TitleListRestControllerTest {
 		mvc.perform(createRequest("/todo/title", "update", reqPramOftitle))
 		.andExpect(status().isOk())
 		.andExpect(content().json(expectedJson));
+		verify(modelMapper, times(1)).map(titleForm, Title.class);
+		verify(todoService, times(1)).updateTitle(title);
+		
 	}
+	
+	@Test
+	@WithMockCustomUser
+	public void タイトルを削除できる() throws Exception {
+	    //テストデータ準備
+		Integer deleteTitleNum = 1;
+		
+	    MultiValueMap<String, String> reqPramOftitle =
+	            new LinkedMultiValueMap<>() {{
+	                add("listId", "1");
+	            }};
+		String expectedJson = "{"
+				+ "\"result\":0, \"errors\":null,"
+				+ "\"titles\":["
+					+ "{\"listId\":1 }"
+					+ "]"
+				+ "}";
+		
+		//モック化
+		doNothing().when(todoService).deleteTitle(deleteTitleNum);
+		
+		//exercise&verify
+		mvc.perform(createRequest("/todo/title", "delete", reqPramOftitle))
+		.andExpect(status().isOk())
+		.andExpect(content().json(expectedJson));
+		verify(todoService, times(1)).deleteTitle(deleteTitleNum);
+	}	
+	
 }
