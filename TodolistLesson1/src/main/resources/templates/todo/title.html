@@ -10,6 +10,9 @@
     integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
 	<!-- 個別JS読み込み -->
 	<script th:src="@{/js/todo/title.js}" defer></script> 
+	<!-- crsf対策 -->
+	<meta name="_csrf" th:content="${_csrf.token}"/>
+	<meta name="_csrf_header" th:content="${_csrf.headerName}"/>	
 </head>
 <body>
 	<div layout:fragment="content">
@@ -28,11 +31,11 @@
 						<th class="col-width-delete"></th>	
 					</tr>
 				</thead>
-				<tbody>
+				<tbody id="titles">
 					<tr th:each="item:${TitleForms}">
-						<td th:text="${item.listName}" class="col-width-name"></td>
+						<td th:text="${item.listName}" class="col-width-name list-name"></td>
 						<td class="col-edit">
-							<a class="btn btn-outline-primary" th:href="@{'/todo/todo/'
+							<a class="btn btn-outline-primary list-id" th:href="@{'/todo/todo/'
 								+ ${item.listId}}">
 								<i class="fas fa-edit"></i>	
 							</a>				
@@ -52,14 +55,10 @@
 				</tbody>
 			</table>
 		</div>
-		<form id="title-create-form" method="post" th:action="@{/todo/title}"
-			class="form-signup">
-			<!-- ボタンエリア -->	
 			<div>
-			<!-- 追加ボタン -->
-				<button class="btn btn-primary btn-lg" type="submit" name="insert">
+				<button id="btn-create"　class="btn btn-primary btn-lg" type="button" name="insert">
 					<i class="fas fa-plus"></i>
-				</button>
+				</button>		 
 			</div>
 		</form>
 	</div>
