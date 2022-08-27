@@ -18,8 +18,6 @@ jQuery(function($){
 		      url: '/todo/title',
 		      data: param
 		    }).done(function(response, textStatus, jqXHR ) {
-				///引数の意味確認と必要に応じて直す（少なくともtitleJsonに置き換えは必要）
-				alert("OK.");///テスト用
 				let titleJson = response.titles[0]	//必ず1番目の要素に格納される。他は空き。
 				addLine(titleJson);					
 		    }).fail(function(jqXHR, textStatus, errorThrown) {
@@ -27,22 +25,40 @@ jQuery(function($){
 		});
 	});
 	
+	/**削除ボタンを押したときの処理 */
+	$('.title-delete-btn').on('click',function(){
+		if (confirm('タイトルを削除します。よろしいですか？')) {	
+			const listId = $(this).prev('.delete-list-id');
+			///ｄoneの下で宣言すると意図した動きをしない。理由をよくわかっていない。
+			let row = $(this).closest('tr');
+			alert(listId.val());
+			$.ajax({
+			      type: 'PUT',
+			      dataType: 'json',
+			      url: '/todo/title',
+			      data: {
+					'delete' : '',
+			      	'listId' : listId.val()
+			      }
+			    }).done(function(response, textStatus, jqXHR ) {
+ 					$(row).remove();
+  				}).fail(function(jqXHR, textStatus, errorThrown) {
+					alert("Failed.");
+			});	
+		} else {
+		  return false
+		}
+	});
+	
+	/**ユーティリティ */
 	/**新しい行の追加 */
 	function addLine(titleJson){
         let clone = $('#titles tr:first').clone(true);
         clone.find('.list-name').val(titleJson.listName);        
         const url = '/todo/todo/' + titleJson.listId;
         clone.find('.list-id').attr('href', url);
-        ///TODO：この際delete側のlistIdも更新する  
+        clone.find('.delete-list-id').attr('value', titleJson.listId);
         $('#titles').append(clone[0]);
-	}		
-
-	/**削除ボタンを押したときの処理 */
-	$('.title-delete-btn').on('click',function(){
-		if (confirm('タイトルを削除します。よろしいですか？')) {
-			$(this).parent('form').submit();
-		} else {
-		  return false
-		}
-	});	
+	}
+			
 });

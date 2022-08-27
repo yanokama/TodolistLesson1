@@ -40,22 +40,20 @@
 								<i class="fas fa-edit"></i>	
 							</a>				
 						</td>
-						<td class="col-width-delete">
-							<form id="title-delete-form" method="post" 
-								th:action="@{/todo/title/delete}" class="form-signup">								
-								<input type = "hidden" th:value="${item.listId}" name="listId">							
-								<!-- 削除ボタン -->
-								<button id="btn-delete" class="btn btn-outline-danger btn-circle title-delete-btn" 
-								type="button" name="delete">
-									<i class="fas fa-times"></i>
-								</button>
-							 </form>	
+						<td class="col-width-delete">						
+							<input class="delete-list-id" type = "hidden" th:value="${item.listId}" name="listId">
+							<!-- 削除ボタン -->
+							<button id="btn-delete" class="btn btn-outline-danger btn-circle title-delete-btn" 
+							type="button" name="delete">
+								<i class="fas fa-times"></i>
+							</button>
 						</td>	
 					</tr>
 				</tbody>
 			</table>
 		</div>
 			<div>
+				<!-- 新規追加ボタン -->
 				<button id="btn-create"　class="btn btn-primary btn-lg" type="button" name="insert">
 					<i class="fas fa-plus"></i>
 				</button>		 
