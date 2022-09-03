@@ -36,7 +36,7 @@ public class TitleListController {
 		
 		//ユーザーのタイトル一覧取得
 		List<Title> titleList = todoService.getTitles(user.getUserId());
-
+		
 		List<TitleForm> titleFormList = new LinkedList<TitleForm>();
 		for(Title title : titleList) {
 			titleFormList.add( modelMapper.map(title, TitleForm.class));
@@ -47,37 +47,5 @@ public class TitleListController {
 		model.addAttribute("TitleForms", titleFormList);
 		
 		return "todo/title";
-	}
-
-	/**タイトル追加*/
-//	@PostMapping(value = "/title" , params = "insert")
-//	public String insertTitle(Model model,
-//			@AuthenticationPrincipal MUser user) {
-//		Title title = new Title();		
-//		title.setUserId(user.getUserId());
-//		title.setListName("new todolist");
-//		//title追加
-//		todoService.insertTitle(title);
-//		return "redirect:/todo/title";
-//	}
-
-	/**タイトル更新*/
-//	@PostMapping(value = "/title/update")	
-//	public String updateTodo(@ModelAttribute TitleForm form, Model model) {
-//
-//		//title更新
-//		Title title = modelMapper.map(form, Title.class);
-//		todoService.updateTitle(title);
-//
-//		return "redirect:/todo/todo/" + form.getListId();
-//	}		
-
-	/**タイトル削除*/	
-//	@PostMapping(value = "/title/delete")
-//	public String deleteTitle(@ModelAttribute("listId") Integer listId, Model model) {
-//
-//		//title削除
-//		todoService.deleteTitle(listId);		
-//		return "redirect:/todo/title";
-//	}		
+	}		
 }

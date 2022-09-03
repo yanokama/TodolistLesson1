@@ -8,13 +8,35 @@ jQuery(function($){
     });
 	
 	/**タイトルを編集したときの処理 */
-	$('#todo-title-form input').change(function(){	
-		$('#todo-title-form').submit();	
+	$('#todo-title input').change(function(){	
+		const title = $(this).parents('#todo-title');
+		const listId = title.find('input[name="listId"]').val();
+	    const userId = title.find('input[name="userId"]').val();
+	    const listName = title.find('input[name="listName"]').val();
+	    const color = title.find('input[name="color"]').val();
+		///test用 alert(listId + userId + listName + color);
+		$.ajax({
+		      type: 'PUT',
+		      dataType: 'json',
+		      url: '/todo/title',
+		      data: {
+				update : '',
+				listId   : listId,
+				userId   : userId,
+				listName : listName,
+				color    : color			
+		      }
+		    }).done(function(response, textStatus, jqXHR ) {
+				///test用 alert("ok")
+				///TODO:リターンコードに応じてエラーがあ0る場合はエラーメッセージを表示
+			}).fail(function(jqXHR, textStatus, errorThrown) {
+				alert("Failed.");
+		});			
 	});	
 	
 	/**todoを更新した時の処理 */	
 	$('tbody input, tbody select').change(function(){		
-	    const todo = $(this).parents('.todo');///あとで
+	    const todo = $(this).parents('.todo');
 	    const itemId = todo.find('input[name="itemId"]').val();
 	    const listId = todo.find('input[name="listId"]').val();
 	    const itemName = todo.find('input[name="itemName"]').val();
