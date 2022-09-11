@@ -4,10 +4,10 @@ import lombok.Data;
 
 @Data
 public class TodoForm {
-	private int ItemId;	
-	private int listId;
+	private Integer ItemId;	
+	private Integer listId;
 	private String ItemName;
-	private int doneFlg;
-	private int priority;
-	private int importance;
+	private Integer doneFlg;
+	private Integer priority;
+	private Integer importance;
 }

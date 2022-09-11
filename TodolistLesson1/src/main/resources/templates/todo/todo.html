@@ -17,9 +17,6 @@
 <body>
 	<div layout:fragment="content">
 		<div class="header border-bottom">
-			<!--  <form id="todo-title-form" method="post" th:action="@{/todo/title/update}" >	
-			-->
-			<!-- TODO:次回はformを廃止してinputのみにする。あわせてJQueryのセレクタを修正！ -->
 			<div id="todo-title">	
 				<input type="hidden" name="listId" th:field="${titleForm.listId}">
 				<input type="hidden" name="userId" th:field="${titleForm.userId}">				
@@ -29,17 +26,6 @@
 						placeholder="タイトルを入力" class="border secondary rounded title-input" >
 				</h1>
 			</div>			
-			<!-- 
-			<form id="todo-title-form">	
-				<input type="hidden" name="listId" th:field="${titleForm.listId}">
-				<input type="hidden" name="userId" th:field="${titleForm.userId}">				
-				<input type="hidden" name="color" th:field="${titleForm.color}">
-				<h1 class="h2">				
-					<input type="text" name="listName" maxlength="50" th:field="${titleForm.listName}"
-						placeholder="タイトルを入力" class="border secondary rounded title-input" >
-				</h1>
-			</form>
-			-->
 		</div>
 		<!-- 一覧表示 -->
 		<div>	
@@ -53,8 +39,7 @@
 						<th class="th-width-btn"></th>
 						
 					</tr>
-				</thead>
-					
+				</thead>				
 				<tbody>	
 					<tr>　</tr>	
 					<tr class="todo" th:each="todoForm:${todoFormList}">
