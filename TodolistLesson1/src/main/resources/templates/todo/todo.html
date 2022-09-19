@@ -29,7 +29,7 @@
 		</div>
 		<!-- 一覧表示 -->
 		<div>	
-			<table class="table table-borderless table-hover todo-table">
+			<table id="todo-table" class="table table-borderless table-hover todo-table">
 				<thead class="thead-light">
 					<tr>
 						<th class="th-width-chk"></th>				
@@ -40,8 +40,8 @@
 						
 					</tr>
 				</thead>				
-				<tbody>	
-					<tr>　</tr>	
+				<tbody id="todos">	
+					<!-- <tr>　</tr> -->	
 					<tr class="todo" th:each="todoForm:${todoFormList}">
 						<td>
 							<input type="checkbox" name="doneFlg" />
@@ -53,20 +53,12 @@
 								class="border border-light rounded input-text" placeholder="todoを入力">	
 						</td>
 						<td>	
-							<!-- 
-							<input type="number" name="priority" th:value="${todoForm.priority}" min="1" max= "5"
-							 	class="border border-light rounded  ">
-							-->
-							<select name="priority" class="border border-light rounded " >
+							<select name="priority" class="border border-light rounded" >
 								<option th:each="i : ${#numbers.sequence(1, 5)}" th:value="${i}"
 								 th:selected="${i==todoForm.priority}" th:text="${i}">
 							</select>
 						</td>
 						<td>
-							<!-- 	
-							<input type="number" name="importance" th:value="${todoForm.importance}" min="1" max= "5"
-								class="border border-light rounded ">	
- 							-->
 							<select name="importance" class="border border-light rounded " >
 								<option th:each="i : ${#numbers.sequence(1, 5)}" th:value="${i}"
 								 th:selected="${i==todoForm.importance}" th:text="${i}">
@@ -76,7 +68,7 @@
 							<form class="btn-circle todo-delete-form" method="post" th:action="@{/todo/todo}">	
 								<input type="hidden" name="itemId" th:value="${todoForm.itemId}"> 
 								<input type="hidden" name="listId" th:value="${todoForm.listId}">
-							    <button type="submit" name="delete" class="btn btn-secondary btn-sm">
+							    <button type="button" name="delete" class="btn btn-secondary btn-sm todo-delete-btn">
 									<i class="fas fa-times"></i>	    
 							    </button>
 							</form>		
@@ -85,16 +77,11 @@
 				</tbody>
 			</table>
 		</div>
-		<!-- ボタンエリア-->
-		<form id="todo-item-add-form" method="post" th:action="@{/todo/todo}"
-			class="form-signup">	
-			<div>
-				<input type="hidden" name="listId" th:value="${titleForm.listId}">
-				<button class="btn btn-primary" type="submit" name="insert">
-					<i class="fas fa-plus"></i>
-				</button>
-			</div>
-		</form>
+		<!-- 新規追加ボタン-->
+		<input class="listid" type="hidden" name="listId" th:value="${titleForm.listId}">
+		<button id="btn-create" class="btn btn-primary" type="button" name="insert">
+			<i class="fas fa-plus"></i>
+		</button>		 
 		<p></p>
 		<h1 class="h2">完了済み</h1>
 		<!-- 完了済み一覧表示 -->
@@ -109,7 +96,7 @@
 						<th class="th-width-btn"></th>
 					</tr>
 				</thead>
-				<tbody>		
+				<tbody id="done-todos">		
 					<tr class="todo"th:each="todoForm:${doneFormList}" th:object="${todoForm}" >
 						<td>
 							<input type="checkbox" name="doneFlg" checked />
@@ -122,20 +109,12 @@
 								class="border border-light rounded input-text" placeholder="todoを入力" >	
 						</td>
 						<td>
-							<!-- 
-							<input type="number" name="priority" th:value="${todoForm.priority}" min="1" max= "5"
-								class="border border-light rounded ">
- 							-->
 							<select name="priority" class="border border-light rounded " >
 								<option th:each="i : ${#numbers.sequence(1, 5)}" th:value="${i}"
 								 th:selected="${i==todoForm.priority}" th:text="${i}">
 							</select>
 						</td>
 						<td>
-							<!-- 
-							<input type="number" name="importance" th:value="${todoForm.importance}" min="1" max= "5"
-								class="border border-light rounded ">
-							 -->
 							<select name="importance" class="border border-light rounded " >
 								<option th:each="i : ${#numbers.sequence(1, 5)}" th:value="${i}"
 								 th:selected="${i==todoForm.importance}" th:text="${i}">
@@ -145,7 +124,7 @@
 							<form class="todo-delete-form" method="post" th:action="@{/todo/todo}">									
 								<input type="hidden" name="itemId" th:value="${todoForm.itemId}"> 
 								<input type="hidden" name="listId" th:value="${todoForm.listId}">	
-							    <button type="submit" name="delete" class="btn btn-secondary btn-sm">
+							    <button type="button" name="delete" class="btn btn-secondary btn-sm todo-delete-btn">
 									<i class="fas fa-times"></i>	    
 							    </button>
 							</form>

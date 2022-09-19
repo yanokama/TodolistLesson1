@@ -39,7 +39,7 @@ public class TodoRestController {
 	}
 	
 	/**todo更新*/
-	@PutMapping(value = "/todo", params="update")
+	@PutMapping(value = "/todo", params = "update")
 	public RestResultOfTodo updateTodo(@ModelAttribute TodoForm form, Model model) {
 
 		Todo todo = modelMapper.map(form, Todo.class);

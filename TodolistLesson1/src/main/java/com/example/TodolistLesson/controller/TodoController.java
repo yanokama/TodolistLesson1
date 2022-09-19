@@ -69,43 +69,6 @@ public class TodoController {
 		
 		return "todo/todo";
 		
-	}
-
-	/**追加*/
-	@PostMapping(value = "/todo" , params = "insert")
-	public String insertTodo(@RequestParam("listId") Integer listId,
-			Model model) {
-
-		//todo登録
-		Todo todo = new Todo();
-		todo.setListId(listId);
-		todo.setPriority(3);
-		todo.setImportance(3);
-		todoService.insertTodo(todo);
-
-		return "redirect:/todo/todo/"+ listId;
-	}	
-	
-	/**todo削除*/
-	@PostMapping(value = "/todo" , params = "delete")
-	public String delete(@ModelAttribute TodoForm form, Model model) {
-		
-		todoService.deleteTodo(form.getItemId());
-
-		return "redirect:/todo/todo/" + form.getListId();
-	}
-
-	/**todo更新*/
-	@PostMapping(value = "/todo/update")
-	@ResponseBody
-	public CommonRestResult updateTodo(@ModelAttribute TodoForm form, Model model) {
-
-		//todo更新
-		Todo todo = modelMapper.map(form, Todo.class);
-		todoService.updateTodo(todo);
-
-		//結果の返却
-		return new CommonRestResult(0, null);
 	}	
 
 }
