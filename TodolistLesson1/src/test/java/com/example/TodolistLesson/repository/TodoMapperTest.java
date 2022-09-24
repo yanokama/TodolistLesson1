@@ -1,6 +1,5 @@
 package com.example.TodolistLesson.repository;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
@@ -130,30 +129,6 @@ public class TodoMapperTest {
     		ArrayList<Title> expectedList = new ArrayList<>();
     		expectedList.add(title);
     		assertIterableEquals(expectedList, mapper.findTitle("testuser1@xxx.co.jp"));
-    	}
-    	public void findTitleOneでタイトルオブジェクトが取得できる() {
-    		
-    	}
-    	public void insertTitleで１件追加できる() {
-    		
-    	}
-    	public void updateTitleで更新できる() {
-    		
-    	}
-    	public void deleteTitleで１件削除できる() {
-    		
-    	}
-    	public void deleteUsersTitleで削除できる() {
-    		
-    	}
-    }
-    
-    class 複数ユーザのデータがある場合 {
-    	public void findTitleで指定したユーザのタイトルが取得できる() {
-    		
-    	}
-    	public void deleteUsersTitleで指定したユーザのタイトルが削除できる() {
-    		
     	}
     }
 }
