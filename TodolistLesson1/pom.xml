@@ -128,6 +128,13 @@
             <version>2.1.4</version>
             <scope>test</scope>
         </dependency>
+		<!-- Mybatisカスタムログのために追加 -->        
+		<!-- Apache Common JEXL -->
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-jexl3</artifactId>
+		    <version>3.0</version>
+		</dependency>        
 	</dependencies>
 
 
